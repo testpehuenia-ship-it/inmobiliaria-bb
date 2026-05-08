@@ -1,0 +1,156 @@
+.fotos-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fotos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fotos-header h2 {
+  font-size: 26px;
+  color: #1a251c;
+  margin: 0 0 8px 0;
+  font-weight: 800;
+}
+
+.fotos-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 15px;
+}
+
+.upload-section {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 60px 40px;
+  text-align: center;
+  margin-bottom: 48px;
+  transition: all 0.2s;
+}
+
+.upload-section:hover {
+  border-color: #90a98c;
+  background: #f0fdf4;
+}
+
+.btn-upload {
+  background: #2b3d2e;
+  color: white;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(43, 61, 46, 0.3);
+}
+
+.btn-upload:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(43, 61, 46, 0.4);
+}
+
+.gallery-section h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.empty-gallery {
+  text-align: center;
+  padding: 40px;
+  background: #f8fafc;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  aspect-ratio: 4/3;
+  border: 2px solid transparent;
+}
+
+.image-card.main-image {
+  border-color: #90a98c;
+  box-shadow: 0 0 0 4px rgba(144, 169, 140, 0.3);
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.main-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #2b3d2e;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding: 20px 12px 12px;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.image-card:hover .image-actions {
+  opacity: 1;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-delete:hover {
+  transform: scale(1.1);
+}

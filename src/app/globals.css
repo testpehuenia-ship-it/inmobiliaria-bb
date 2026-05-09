@@ -964,19 +964,31 @@ body {
   .main-photo-large { height: 300px; }
   .features-grid { grid-template-columns: repeat(2, 1fr); }
 
-  .catalog-header { padding: 40px 20px 60px; }
+  .catalog-header { padding: 60px 20px 80px; } /* Increased padding */
   .catalog-header h1 { font-size: 2rem; line-height: 1.2; }
-  .catalog-header p { font-size: 1rem; }
-  .catalog-results { padding: 30px 15px; }
+  .catalog-header p { font-size: 1rem; margin-bottom: 20px; } /* Add margin to prevent overlap */
+  .catalog-results { padding: 40px 15px; }
   .results-header h2 { font-size: 1.5rem; }
   
+  .search-wrapper { margin-top: -30px; padding: 0 15px; } /* Slightly reduced negative margin */
+  
+  .contact-page-container { padding: 40px 15px !important; }
+  .contact-header h1 { font-size: 1.8rem !important; line-height: 1.2; }
+  .contact-header p { font-size: 1rem !important; }
+  .forms-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+
+  .nosotros-page { padding: 40px 15px !important; }
+  .nosotros-page h1 { font-size: 2.2rem !important; }
+  .nosotros-page h2 { font-size: 1.6rem !important; }
+
   .main-footer { padding: 40px 20px; }
 }
 
 /* Very Small Devices (480px) */
 @media (max-width: 480px) {
   .hero-content h1 { font-size: 1.6rem; }
-  .catalog-header h1 { font-size: 1.8rem; }
+  .catalog-header h1 { font-size: 1.7rem; }
+  .catalog-header p { font-size: 0.95rem; }
   .feature-box { padding: 15px 10px; }
   .feature-value { font-size: 1.4rem; }
 }

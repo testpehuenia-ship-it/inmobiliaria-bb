@@ -28,6 +28,7 @@ export default function EditarPropiedadPage({ params }: { params: Promise<{ id: 
     city: '',
     neighborhood: '',
     address: '',
+    isNewArrival: false,
   });
 
   // Cargar datos existentes de la propiedad
@@ -51,6 +52,7 @@ export default function EditarPropiedadPage({ params }: { params: Promise<{ id: 
             city: data.city,
             neighborhood: data.neighborhood || '',
             address: data.address || '',
+            isNewArrival: data.isNewArrival || false,
           });
         }
       })
@@ -63,7 +65,9 @@ export default function EditarPropiedadPage({ params }: { params: Promise<{ id: 
   }, [resolvedParams.id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target as HTMLInputElement;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData({ ...formData, [name]: val });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -202,6 +206,25 @@ export default function EditarPropiedadPage({ params }: { params: Promise<{ id: 
             <div className="input-group">
               <label>Dirección</label>
               <input type="text" name="address" value={formData.address} onChange={handleChange} />
+            </div>
+          </div>
+        </div>
+
+        {/* SECCIÓN 4: OPCIONES COMERCIALES */}
+        <div className="form-section">
+          <h3>4. Opciones Comerciales</h3>
+          <div className="input-row">
+            <div className="input-group checkbox-group">
+              <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: '600', color: '#2b6e4f' }}>
+                <input 
+                  type="checkbox" 
+                  name="isNewArrival" 
+                  checked={formData.isNewArrival} 
+                  onChange={handleChange} 
+                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                />
+                Marcar como "Recién Ingresado" (Aparecerá en el carrusel premium de inicio)
+              </label>
             </div>
           </div>
         </div>

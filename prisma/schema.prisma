@@ -38,6 +38,7 @@ model Property {
   neighborhood  String?
   address       String?
   isFeatured    Boolean   @default(false)
+  isNewArrival  Boolean   @default(false)
   agentId       String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

@@ -23,10 +23,13 @@ export default function NuevaPropiedadPage() {
     city: 'Neuquén',
     neighborhood: '',
     address: '',
+    isNewArrival: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target as HTMLInputElement;
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setFormData({ ...formData, [name]: val });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,6 +154,25 @@ export default function NuevaPropiedadPage() {
             <div className="input-group">
               <label>Dirección (Opcional)</label>
               <input type="text" name="address" placeholder="Ej: Av. Argentina 123" value={formData.address} onChange={handleChange} />
+            </div>
+          </div>
+        </div>
+
+        {/* SECCIÓN 4: OPCIONES COMERCIALES */}
+        <div className="form-section">
+          <h3>4. Opciones Comerciales</h3>
+          <div className="input-row">
+            <div className="input-group checkbox-group">
+              <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: '600', color: '#2b6e4f' }}>
+                <input 
+                  type="checkbox" 
+                  name="isNewArrival" 
+                  checked={formData.isNewArrival} 
+                  onChange={handleChange} 
+                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                />
+                Marcar como "Recién Ingresado" (Aparecerá en el carrusel premium de inicio)
+              </label>
             </div>
           </div>
         </div>

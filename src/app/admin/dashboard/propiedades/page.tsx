@@ -45,7 +45,7 @@ export default async function PropiedadesListPage() {
                 <tr key={prop.id}>
                   <td className="prop-id">#{prop.id.slice(-5).toUpperCase()}</td>
                   <td className="prop-title">
-                    <strong>{prop.title}</strong>
+                    <strong>{prop.title} {prop.isNewArrival && <span style={{ backgroundColor: '#c5a059', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', marginLeft: '5px' }}>NEW</span>}</strong>
                     <span>{prop.propertyType} en {prop.city}</span>
                   </td>
                   <td>

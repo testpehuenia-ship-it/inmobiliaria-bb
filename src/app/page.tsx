@@ -2,6 +2,7 @@ import Image from "next/image";
 import PropertyCard from "@/components/PropertyCard";
 import HeroSlider from "@/components/HeroSlider";
 import SearchBar from "@/components/SearchBar";
+import RecentArrivals from "@/components/RecentArrivals";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
@@ -39,6 +40,9 @@ export default async function Home() {
 
       {/* Floating Search Bar */}
       <SearchBar />
+
+      {/* Recién Ingresados Section (Infinite Flip Carousel) */}
+      <RecentArrivals />
 
       {/* Featured Properties Section */}
       <section className="featured-section">

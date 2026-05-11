@@ -874,6 +874,201 @@ body {
 }
 
 /* ==========================================================================
+   RECENT ARRIVALS - FLIP EFFECT & CAROUSEL
+   ========================================================================== */
+
+.recent-arrivals-section {
+  padding: 100px 0;
+  background-color: #f9faf8;
+  overflow: hidden;
+}
+
+.recent-arrivals-section .section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.recent-arrivals-section .subtitle {
+  color: var(--color-btn-primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.recent-arrivals-section h2 {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  color: var(--color-text-dark);
+}
+
+.recent-arrivals-section .accent-line {
+  width: 80px;
+  height: 4px;
+  background-color: var(--color-btn-primary);
+  margin: 20px auto 0;
+}
+
+.carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  padding: 40px 0;
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  gap: 30px;
+  animation: scrollInfinite 60s linear infinite;
+}
+
+.carousel-viewport:hover .carousel-track {
+  animation-play-state: paused;
+}
+
+@keyframes scrollInfinite {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.flip-card-container {
+  width: 320px;
+  height: 420px;
+  perspective: 1200px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  border-radius: 20px;
+}
+
+.flip-card-container:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.flip-card-front {
+  background-color: #eee;
+}
+
+.flip-card-front .card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 30px 20px;
+  color: white;
+}
+
+.flip-card-front .card-overlay h3 {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+.flip-card-front .card-overlay p {
+  color: #c5a059;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.flip-card-back {
+  background-color: #1a251c;
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  border: 1px solid var(--color-btn-primary);
+}
+
+.flip-card-back h3 {
+  font-family: var(--font-serif);
+  color: var(--color-btn-primary);
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(144, 169, 140, 0.3);
+  padding-bottom: 10px;
+  width: 80%;
+  text-align: center;
+}
+
+.features-grid-flip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.feature-item-flip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-item-flip svg {
+  color: var(--color-btn-primary);
+}
+
+.feature-item-flip span {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #999;
+}
+
+.feature-item-flip strong {
+  font-size: 1rem;
+}
+
+.cta-button-flip {
+  margin-top: 30px;
+  padding: 12px 25px;
+  background-color: var(--color-btn-primary);
+  color: #1a251c;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.cta-button-flip:hover {
+  background-color: #7a8f76;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .recent-arrivals-section h2 { font-size: 2.2rem; }
+  .flip-card-container {
+    width: 280px;
+    height: 380px;
+  }
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN (Media Queries)
    ========================================================================== */
 

@@ -40,6 +40,7 @@ export async function POST(request: Request) {
         neighborhood: data.neighborhood || '',
         address: data.address || '',
         isFeatured: false,
+        isNewArrival: data.isNewArrival === true || data.isNewArrival === 'true',
         agentId: agent.id, // Relacionamos la propiedad con el ID del creador
       }
     });
@@ -48,5 +49,21 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("ERROR CRÍTICO AL GUARDAR:", error);
     return NextResponse.json({ error: 'Error al crear la propiedad' }, { status: 500 });
+  }
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const isNewArrival = searchParams.get('isNewArrival') === 'true';
+
+  try {
+    const properties = await prisma.property.findMany({
+      where: isNewArrival ? { isNewArrival: true } : {},
+      include: { images: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    return NextResponse.json(properties);
+  } catch (error) {
+    return NextResponse.json({ error: 'Error al obtener propiedades' }, { status: 500 });
   }
 }

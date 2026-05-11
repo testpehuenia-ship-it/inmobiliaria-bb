@@ -924,8 +924,10 @@ body {
   animation: scrollInfinite 38s linear infinite;
 }
 
-.carousel-viewport:hover .carousel-track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .carousel-viewport:hover .carousel-track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes scrollInfinite {
@@ -950,7 +952,12 @@ body {
 }
 
 /* Desktop: flip on hover. Mobile: flip controlled by .is-flipped class via JS */
-.flip-card-container:hover .flip-card-inner,
+@media (hover: hover) and (pointer: fine) {
+  .flip-card-container:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
 .flip-card-inner.is-flipped {
   transform: rotateY(180deg);
 }
@@ -1067,13 +1074,6 @@ body {
   .flip-card-container {
     width: 280px;
     height: 380px;
-  }
-  /* On mobile, disable the CSS hover flip — JS toggle handles it */
-  .flip-card-container:hover .flip-card-inner {
-    transform: none;
-  }
-  .flip-card-inner.is-flipped {
-    transform: rotateY(180deg);
   }
 }
 

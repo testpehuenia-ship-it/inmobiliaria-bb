@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 
 const TESTIMONIALS = [
@@ -60,14 +60,8 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="star-rating" aria-label={`${rating} de 5 estrellas`}>
       {[1, 2, 3, 4, 5].map(star => (
-        <svg
-          key={star}
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill={star <= rating ? '#f59e0b' : '#d1d5db'}
-          stroke="none"
-        >
+        <svg key={star} width="18" height="18" viewBox="0 0 24 24"
+          fill={star <= rating ? '#f59e0b' : '#d1d5db'} stroke="none">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
       ))}
@@ -75,10 +69,38 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+const AUTOPLAY_INTERVAL = 4500; // ms between slides
+
 export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [direction, setDirection] = useState<'left' | 'right'>('left');
+  const [animating, setAnimating] = useState(false);
 
-  const avgRating = (TESTIMONIALS.reduce((a, t) => a + t.rating, 0) / TESTIMONIALS.length).toFixed(1);
+  const total = TESTIMONIALS.length;
+  const avgRating = (TESTIMONIALS.reduce((a, t) => a + t.rating, 0) / total).toFixed(1);
+
+  const goTo = useCallback((index: number, dir: 'left' | 'right' = 'left') => {
+    if (animating) return;
+    setDirection(dir);
+    setAnimating(true);
+    setTimeout(() => {
+      setActiveIndex((index + total) % total);
+      setAnimating(false);
+    }, 400);
+  }, [animating, total]);
+
+  const next = useCallback(() => goTo(activeIndex + 1, 'left'), [activeIndex, goTo]);
+  const prev = useCallback(() => goTo(activeIndex - 1, 'right'), [activeIndex, goTo]);
+
+  // Auto-advance
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(next, AUTOPLAY_INTERVAL);
+    return () => clearInterval(timer);
+  }, [isPaused, next]);
+
+  const t = TESTIMONIALS[activeIndex];
 
   return (
     <section className="testimonials-section">
@@ -88,21 +110,20 @@ export default function Testimonials() {
         <h2>Opiniones y Calificaciones</h2>
         <div className="accent-line" style={{ margin: '20px auto 50px' }}></div>
 
-        {/* Overall Rating Summary */}
+        {/* Rating Summary */}
         <div className="rating-summary">
           <div className="rating-big-number">{avgRating}</div>
           <div className="rating-details">
             <StarRating rating={5} />
-            <p>Basado en {TESTIMONIALS.length} reseñas verificadas</p>
+            <p>Basado en {total} reseñas verificadas</p>
             <div className="rating-bars">
               {[5, 4, 3, 2, 1].map(n => (
                 <div key={n} className="rating-bar-row">
                   <span>{n}★</span>
                   <div className="rating-bar-bg">
-                    <div
-                      className="rating-bar-fill"
+                    <div className="rating-bar-fill"
                       style={{ width: `${n === 5 ? '95' : n === 4 ? '4' : '1'}%` }}
-                    ></div>
+                    />
                   </div>
                   <span className="rating-bar-pct">{n === 5 ? '95%' : n === 4 ? '4%' : '1%'}</span>
                 </div>
@@ -112,24 +133,29 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* Testimonials Cards */}
-      <div className="testimonials-grid">
-        {TESTIMONIALS.map((t, index) => (
-          <div
-            key={t.id}
-            className={`testimonial-card ${index === activeIndex ? 'featured' : ''}`}
-            onClick={() => setActiveIndex(index)}
-          >
-            {/* Quote icon */}
+      {/* Carousel */}
+      <div
+        className="testimonials-carousel"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Prev Button */}
+        <button className="tcarousel-btn tcarousel-prev" onClick={prev} aria-label="Anterior">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        {/* Card */}
+        <div className={`testimonials-slide-wrapper ${animating ? `slide-out-${direction}` : 'slide-in'}`}>
+          <div className="testimonial-card-single">
             <div className="quote-icon">"</div>
-
             <StarRating rating={t.rating} />
-
             <p className="testimonial-text">{t.text}</p>
-
             <div className="testimonial-footer">
               <div className="testimonial-avatar">
-                <Image src={t.avatar} alt={t.name} width={50} height={50} style={{ borderRadius: '50%', objectFit: 'cover' }} unoptimized />
+                <Image src={t.avatar} alt={t.name} width={56} height={56}
+                  style={{ borderRadius: '50%', objectFit: 'cover' }} unoptimized />
               </div>
               <div className="testimonial-author">
                 <strong>{t.name}</strong>
@@ -139,6 +165,39 @@ export default function Testimonials() {
               <div className="testimonial-date">{t.date}</div>
             </div>
           </div>
+        </div>
+
+        {/* Next Button */}
+        <button className="tcarousel-btn tcarousel-next" onClick={next} aria-label="Siguiente">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Dot Indicators */}
+      <div className="tcarousel-dots">
+        {TESTIMONIALS.map((_, i) => (
+          <button
+            key={i}
+            className={`tcarousel-dot ${i === activeIndex ? 'active' : ''}`}
+            onClick={() => goTo(i, i > activeIndex ? 'left' : 'right')}
+            aria-label={`Ir a reseña ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Thumbnail Row */}
+      <div className="tcarousel-thumbs">
+        {TESTIMONIALS.map((item, i) => (
+          <button
+            key={item.id}
+            className={`tcarousel-thumb ${i === activeIndex ? 'active' : ''}`}
+            onClick={() => goTo(i, i > activeIndex ? 'left' : 'right')}
+          >
+            <Image src={item.avatar} alt={item.name} width={44} height={44}
+              style={{ borderRadius: '50%', objectFit: 'cover' }} unoptimized />
+          </button>
         ))}
       </div>
 

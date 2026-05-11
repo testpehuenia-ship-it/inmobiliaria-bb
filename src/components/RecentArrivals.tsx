@@ -16,8 +16,67 @@ interface Property {
   bedrooms: number;
   bathrooms: number;
   totalArea: number;
+  parking?: number;
   images: PropertyImage[];
 }
+
+const DEMO_PROPERTIES: Property[] = [
+  {
+    id: 'demo-1',
+    title: 'Villa Esmeralda – Santa Genoveva',
+    price: 285000,
+    currency: 'USD',
+    bedrooms: 4,
+    bathrooms: 3,
+    totalArea: 320,
+    parking: 2,
+    images: [{ url: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80' }],
+  },
+  {
+    id: 'demo-2',
+    title: 'Departamento Premium – Centro',
+    price: 148000,
+    currency: 'USD',
+    bedrooms: 2,
+    bathrooms: 2,
+    totalArea: 95,
+    parking: 1,
+    images: [{ url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }],
+  },
+  {
+    id: 'demo-3',
+    title: 'Casa Moderna – Confluencia',
+    price: 220000,
+    currency: 'USD',
+    bedrooms: 3,
+    bathrooms: 2,
+    totalArea: 210,
+    parking: 2,
+    images: [{ url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80' }],
+  },
+  {
+    id: 'demo-4',
+    title: 'Casa de Diseño – Rincón de los Sauces',
+    price: 195000,
+    currency: 'USD',
+    bedrooms: 3,
+    bathrooms: 2,
+    totalArea: 178,
+    parking: 1,
+    images: [{ url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80' }],
+  },
+  {
+    id: 'demo-5',
+    title: 'Penthouse con Vista al Limay',
+    price: 310000,
+    currency: 'USD',
+    bedrooms: 3,
+    bathrooms: 3,
+    totalArea: 260,
+    parking: 2,
+    images: [{ url: 'https://images.unsplash.com/photo-1600607687940-4e5a994e5373?auto=format&fit=crop&w=800&q=80' }],
+  },
+];
 
 export default function RecentArrivals() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -27,16 +86,31 @@ export default function RecentArrivals() {
     fetch('/api/properties?isNewArrival=true')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setProperties(data);
+        } else {
+          // Si no hay propiedades marcadas, mostramos demo para la presentación
+          setProperties(DEMO_PROPERTIES);
         }
       })
-      .catch(err => console.error(err))
+      .catch(() => setProperties(DEMO_PROPERTIES))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return null;
-  if (properties.length === 0) return null;
+  if (loading) return (
+    <section className="recent-arrivals-section">
+      <div className="section-header">
+        <span className="subtitle">Oportunidades Premium</span>
+        <h2>Recién Ingresados</h2>
+        <div className="accent-line"></div>
+      </div>
+      <div style={{ height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="loading-spinner"></div>
+      </div>
+    </section>
+  );
+
+  const displayProps = [...properties, ...properties]; // loop infinito
 
   return (
     <section className="recent-arrivals-section">
@@ -48,21 +122,21 @@ export default function RecentArrivals() {
 
       <div className="carousel-viewport">
         <div className="carousel-track">
-          {/* Duplicamos para el efecto infinito */}
-          {[...properties, ...properties].map((property, index) => (
+          {displayProps.map((property, index) => (
             <div key={`${property.id}-${index}`} className="flip-card-container">
               <div className="flip-card-inner">
                 {/* Frente: Imagen y Título */}
                 <div className="flip-card-front">
-                  <Image 
-                    src={property.images[0]?.url || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80'} 
+                  <Image
+                    src={property.images[0]?.url || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80'}
                     alt={property.title}
                     fill
                     style={{ objectFit: 'cover' }}
+                    unoptimized
                   />
                   <div className="card-overlay">
                     <h3>{property.title}</h3>
-                    <p>{property.currency} {property.price.toLocaleString()}</p>
+                    <p>{property.currency} {property.price.toLocaleString('es-AR')}</p>
                   </div>
                 </div>
 
@@ -88,10 +162,13 @@ export default function RecentArrivals() {
                     <div className="feature-item-flip">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
                       <span>Parking</span>
-                      <strong>Disponible</strong>
+                      <strong>{property.parking ?? 1} Cochera{(property.parking ?? 1) > 1 ? 's' : ''}</strong>
                     </div>
                   </div>
-                  <Link href={`/propiedades/${property.id}`} className="cta-button-flip">
+                  <Link
+                    href={property.id.startsWith('demo-') ? '/venta' : `/propiedades/${property.id}`}
+                    className="cta-button-flip"
+                  >
                     Ver Más Detalles
                   </Link>
                 </div>

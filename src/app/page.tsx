@@ -3,6 +3,8 @@ import PropertyCard from "@/components/PropertyCard";
 import HeroSlider from "@/components/HeroSlider";
 import SearchBar from "@/components/SearchBar";
 import RecentArrivals from "@/components/RecentArrivals";
+import ConstructionVideo from "@/components/ConstructionVideo";
+import Testimonials from "@/components/Testimonials";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
@@ -72,6 +74,12 @@ export default async function Home() {
           )}
         </div>
       </section>
+
+      {/* Video: Del Terreno a Tu Hogar */}
+      <ConstructionVideo />
+
+      {/* Testimonials & Ratings */}
+      <Testimonials />
     </main>
   );
 }
